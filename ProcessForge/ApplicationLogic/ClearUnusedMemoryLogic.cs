@@ -10,24 +10,23 @@ namespace ProcessForge.ApplicationLogic
     {
         [DllImport("psapi.dll")]
         public static extern bool EmptyWorkingSet(IntPtr hProcess);
-        private static void ClearUnusedMemory(string processName)
+        public static void ClearUnusedMemory(string processName)
         {
             string processname = processName;
 
             Process[] AllProcess = Process.GetProcessesByName(processname);
 
-
             if (AllProcess.Length > 0)
             {
 
                 StringBuilder sb = new StringBuilder();
-                sb.Append("Berhasil mengompres cina\n");
+                sb.Append($"Success Clearing {processName}!\n");
                 foreach (Process process in AllProcess)
                 {
                     bool result = EmptyWorkingSet(process.Handle);
                     if (result)
                     {
-                        sb.Append("Process Name : " + process.ProcessName + " Process ID : " + process.Id + "\n");
+                        sb.Append("Name: " + process.ProcessName + ", ID: " + process.Id + "\n");
                     }
                     else
                     {
@@ -36,12 +35,12 @@ namespace ProcessForge.ApplicationLogic
                     }
                 }
                 sb.Remove(sb.Length - 1, 1);
-                MessageBox.Show(sb.ToString(), "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(sb.ToString(), "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             else
             {
-                MessageBox.Show("There's no Process name inc.exe. Are you really open it?");
+                MessageBox.Show($"There's no Process name {processName}. Are you really open it?");
             }
         }
         public static void ClearUnusedMemoryWithoutMessageBox(string processName)

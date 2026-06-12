@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label1 = new Label();
             ClearRAM = new Button();
             ValidatingEvent = new Button();
             label2 = new Label();
-            TimeForLooping = new TextBox();
-            label3 = new Label();
-            label4 = new Label();
+            MSTimeSetLabel = new Label();
+            CountDownSeconds = new Label();
             Run1 = new Button();
             label5 = new Label();
             label6 = new Label();
@@ -51,6 +51,10 @@
             ComboBox = new ComboBox();
             ProcessName = new TextBox();
             label11 = new Label();
+            TimeSetForClearRAM = new NumericUpDown();
+            CountDownTimer = new System.Windows.Forms.Timer(components);
+            TimerForSeconds = new System.Windows.Forms.Timer(components);
+            ((System.ComponentModel.ISupportInitialize)TimeSetForClearRAM).BeginInit();
             SuspendLayout();
             // 
             // label1
@@ -91,30 +95,23 @@
             label2.TabIndex = 2;
             label2.Text = "Clear Unused Memory\r\n(Looping every X Seconds)";
             // 
-            // TimeForLooping
+            // MSTimeSetLabel
             // 
-            TimeForLooping.Location = new Point(12, 191);
-            TimeForLooping.Name = "TimeForLooping";
-            TimeForLooping.Size = new Size(150, 31);
-            TimeForLooping.TabIndex = 4;
+            MSTimeSetLabel.AutoSize = true;
+            MSTimeSetLabel.Location = new Point(179, 191);
+            MSTimeSetLabel.Name = "MSTimeSetLabel";
+            MSTimeSetLabel.Size = new Size(150, 25);
+            MSTimeSetLabel.TabIndex = 5;
+            MSTimeSetLabel.Text = "(MS) No Time Set";
             // 
-            // label3
+            // CountDownSeconds
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(179, 191);
-            label3.Name = "label3";
-            label3.Size = new Size(150, 25);
-            label3.TabIndex = 5;
-            label3.Text = "(MS) No Time Set";
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(12, 265);
-            label4.Name = "label4";
-            label4.Size = new Size(177, 25);
-            label4.TabIndex = 6;
-            label4.Text = "Count down event :  ";
+            CountDownSeconds.AutoSize = true;
+            CountDownSeconds.Location = new Point(12, 265);
+            CountDownSeconds.Name = "CountDownSeconds";
+            CountDownSeconds.Size = new Size(177, 25);
+            CountDownSeconds.TabIndex = 6;
+            CountDownSeconds.Text = "Count down event :  ";
             // 
             // Run1
             // 
@@ -245,9 +242,12 @@
             // ProcessName
             // 
             ProcessName.Location = new Point(12, 39);
+            ProcessName.MaxLength = 100;
             ProcessName.Name = "ProcessName";
+            ProcessName.PlaceholderText = "(chrome, notepad, etc)";
             ProcessName.Size = new Size(856, 31);
             ProcessName.TabIndex = 21;
+            ProcessName.TextAlign = HorizontalAlignment.Center;
             // 
             // label11
             // 
@@ -258,6 +258,27 @@
             label11.TabIndex = 22;
             label11.Text = "Process Name";
             // 
+            // TimeSetForClearRAM
+            // 
+            TimeSetForClearRAM.Increment = new decimal(new int[] { 1000, 0, 0, 0 });
+            TimeSetForClearRAM.Location = new Point(12, 191);
+            TimeSetForClearRAM.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            TimeSetForClearRAM.Minimum = new decimal(new int[] { 1000, 0, 0, 0 });
+            TimeSetForClearRAM.Name = "TimeSetForClearRAM";
+            TimeSetForClearRAM.Size = new Size(161, 31);
+            TimeSetForClearRAM.TabIndex = 23;
+            TimeSetForClearRAM.Value = new decimal(new int[] { 1000, 0, 0, 0 });
+            // 
+            // CountDownTimer
+            // 
+            CountDownTimer.Interval = 10000;
+            CountDownTimer.Tick += CountDownTimer_Tick;
+            // 
+            // TimerForSeconds
+            // 
+            TimerForSeconds.Interval = 1000;
+            TimerForSeconds.Tick += TimerForSeconds_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
@@ -265,6 +286,7 @@
             BackColor = SystemColors.Control;
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(900, 450);
+            Controls.Add(TimeSetForClearRAM);
             Controls.Add(label11);
             Controls.Add(ProcessName);
             Controls.Add(ComboBox);
@@ -281,17 +303,23 @@
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(Run1);
-            Controls.Add(label4);
-            Controls.Add(label3);
-            Controls.Add(TimeForLooping);
+            Controls.Add(CountDownSeconds);
+            Controls.Add(MSTimeSetLabel);
             Controls.Add(ValidatingEvent);
             Controls.Add(label2);
             Controls.Add(ClearRAM);
             Controls.Add(label1);
             Name = "Form1";
             Text = "Process Forge (0.0.0)";
+            ((System.ComponentModel.ISupportInitialize)TimeSetForClearRAM).EndInit();
             ResumeLayout(false);
             PerformLayout();
+        }
+
+        private void CountDownTimer_Tick(object sender, EventArgs e)
+        {
+            secondsRemaining = (int)(TimeSetForClearRAM.Value / 1000);
+            ApplicationLogic.ClearUnusedMemoryLogic.ClearUnusedMemoryWithoutMessageBox(ProcessName.Text);
         }
 
         #endregion
@@ -300,9 +328,8 @@
         private Button ClearRAM;
         private Button ValidatingEvent;
         private Label label2;
-        private TextBox TimeForLooping;
-        private Label label3;
-        private Label label4;
+        private Label MSTimeSetLabel;
+        private Label CountDownSeconds;
         private Button Run1;
         private Label label5;
         private Label label6;
@@ -319,5 +346,8 @@
         private ComboBox ComboBox;
         private TextBox ProcessName;
         private Label label11;
+        private NumericUpDown TimeSetForClearRAM;
+        private System.Windows.Forms.Timer CountDownTimer;
+        private System.Windows.Forms.Timer TimerForSeconds;
     }
 }
