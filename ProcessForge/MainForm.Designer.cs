@@ -1,6 +1,6 @@
 ﻿namespace ProcessForge
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             label1 = new Label();
             ClearRAM = new Button();
             ValidatingEvent = new Button();
@@ -73,6 +73,9 @@
             numericUpDown5 = new NumericUpDown();
             label4 = new Label();
             CPUChecker = new Button();
+            panel4 = new Panel();
+            label7 = new Label();
+            OpenBulkWindow = new Button();
             ((System.ComponentModel.ISupportInitialize)TimeSetForClearRAM).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown2).BeginInit();
@@ -570,13 +573,50 @@
             CPUChecker.UseVisualStyleBackColor = false;
             CPUChecker.Click += CPUChecker_Click;
             // 
-            // Form1
+            // panel4
+            // 
+            panel4.BackColor = Color.Transparent;
+            panel4.BorderStyle = BorderStyle.Fixed3D;
+            panel4.ForeColor = SystemColors.ActiveCaptionText;
+            panel4.Location = new Point(14, 469);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(336, 10);
+            panel4.TabIndex = 40;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Font = new Font("Segoe UI Symbol", 12F);
+            label7.ForeColor = Color.White;
+            label7.Location = new Point(12, 490);
+            label7.Name = "label7";
+            label7.Size = new Size(201, 32);
+            label7.TabIndex = 46;
+            label7.Text = "Bulk App Handler";
+            // 
+            // OpenBulkWindow
+            // 
+            OpenBulkWindow.BackColor = SystemColors.Desktop;
+            OpenBulkWindow.Font = new Font("Segoe UI Symbol", 9F);
+            OpenBulkWindow.ForeColor = Color.White;
+            OpenBulkWindow.Location = new Point(12, 535);
+            OpenBulkWindow.Name = "OpenBulkWindow";
+            OpenBulkWindow.Size = new Size(338, 47);
+            OpenBulkWindow.TabIndex = 47;
+            OpenBulkWindow.Text = "Open";
+            OpenBulkWindow.UseVisualStyleBackColor = false;
+            OpenBulkWindow.Click += OpenBulkWindow_Click;
+            // 
+            // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Desktop;
             BackgroundImageLayout = ImageLayout.None;
             ClientSize = new Size(886, 667);
+            Controls.Add(OpenBulkWindow);
+            Controls.Add(label7);
+            Controls.Add(panel4);
             Controls.Add(CPUChecker);
             Controls.Add(label4);
             Controls.Add(numericUpDown5);
@@ -620,7 +660,7 @@
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form1";
+            Name = "MainForm";
             Text = "Process Forge (0.0.0)";
             ((System.ComponentModel.ISupportInitialize)TimeSetForClearRAM).EndInit();
             ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
@@ -679,5 +719,8 @@
         private NumericUpDown numericUpDown5;
         private Label label4;
         private Button CPUChecker;
+        private Panel panel4;
+        private Label label7;
+        private Button OpenBulkWindow;
     }
 }

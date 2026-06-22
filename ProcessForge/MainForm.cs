@@ -5,7 +5,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ProcessForge
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         //for timer
         int secondsRemaining;
@@ -18,8 +18,11 @@ namespace ProcessForge
         bool isUsingCPUCheck = false;
         private CancellationTokenSource? _cts;
 
+        //for BulkWindowForm
+        BulkWindowForm? bulkWindowForm;
+
         string DesktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             FormStartup();
@@ -308,7 +311,14 @@ namespace ProcessForge
             return;
         }
 
-
+        private void OpenBulkWindow_Click(object sender, EventArgs e)
+        {
+            if (bulkWindowForm == null || bulkWindowForm.IsDisposed)
+            {
+                bulkWindowForm = new BulkWindowForm();
+                bulkWindowForm.Show();
+            }
+        }
 
 
 
@@ -421,5 +431,7 @@ namespace ProcessForge
                 CPUChecker.Text = "On";
             }
         }
+
+        
     }
 }
