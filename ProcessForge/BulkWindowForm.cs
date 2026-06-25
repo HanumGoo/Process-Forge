@@ -23,118 +23,99 @@ namespace ProcessForge
         {
             InitializeComponent();
             ProcessName = processName;
+            FormStartup();
+            RefreshFunction();
+        }
+        public void FormStartup()
+        {
+            ProcessListLabel.Text = !string.IsNullOrEmpty(ProcessName) ? $"Process List ({ProcessName})" : "Process List (None)";
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
         {
-            
-            Process[] AllProcess = Process.GetProcessesByName(ProcessName);
-            List<string> ProcessTitle = new List<string>();
+            RefreshFunction();
+        }
 
-            foreach (Process item in AllProcess)
+        private void PreviousButton_Click(object sender, EventArgs e)
+        {
+            if (PageCount == 1)
             {
-                ProcessTitle.Add(item.MainWindowTitle);
+                return;
             }
+            PageCount -= 1;
+            RefreshFunction();
+        }
 
-            if (!isUsingImport)
+        private void NextButton_Click(object sender, EventArgs e)
+        {
+            if (Process.GetProcessesByName(ProcessName).Length < PageCount * 100)
             {
-                RefreshLogic.RefreshLogic.Refresh(flowLayoutPanel, LabelPage, PageCount, ProcessTitle);
+                return;
             }
-            else
+            PageCount += 1;
+            RefreshFunction();
+        }
+            private void RefreshFunction()
             {
-                string path = ImportTextbox.Text;
-
-                if (!File.Exists(path) || string.IsNullOrEmpty(path))
+                if (string.IsNullOrEmpty(ProcessName))
                 {
-                    MessageBox.Show("Error! : the path isnt right or you didn't add one.", "error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("please add process name first at the main form", "error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+                Process[] AllProcess = Process.GetProcessesByName(ProcessName);
+                List<string> ProcessTitle = new List<string>();
 
-                string[] AllData = File.ReadAllText(path).Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                List<List<string>> AllDataImport = new List<List<string>>
+                foreach (Process item in AllProcess)
                 {
-                    new List<string>(),
-                    new List<string>()
-                };
-
-
-                foreach (string item in AllData)
-                {
-                    string[] TitleAndStatus = item.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-
-                    if (TitleAndStatus.Length != 2)
+                    if (string.IsNullOrEmpty(item.MainWindowTitle))
                     {
-                        MessageBox.Show("Import Data error! please check this one: \n" + item, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        
+                    }
+                    else
+                    {
+                        ProcessTitle.Add(item.MainWindowTitle);
+                    }
+                    
+                }
+
+                if (!isUsingImport)
+                {
+                    RefreshLogic.RefreshLogic.Refresh(flowLayoutPanel, LabelPage, PageCount, ProcessTitle);
+                }
+                else
+                {
+                    string path = ImportTextbox.Text;
+
+                    if (!File.Exists(path) || string.IsNullOrEmpty(path))
+                    {
+                        MessageBox.Show("Error! : the path isnt right or you didn't add one.", "error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
-                    AllDataImport[0].Add(TitleAndStatus[0]);
-                    AllDataImport[1].Add(TitleAndStatus[1]);
+                    string[] AllData = File.ReadAllText(path).Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    List<List<string>> AllDataImport = new List<List<string>>
+                    {
+                        new List<string>(),
+                        new List<string>()
+                    };
+
+
+                    foreach (string item in AllData)
+                    {
+                        string[] TitleAndStatus = item.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (TitleAndStatus.Length != 2)
+                        {
+                            MessageBox.Show("Import Data error! please check this one: \n" + item, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        AllDataImport[0].Add(TitleAndStatus[0]);
+                        AllDataImport[1].Add(TitleAndStatus[1]);
+                    }
+
+                    RefreshLogic.RefreshLogic.RefreshWIthNotepadCheck(flowLayoutPanel, LabelPage, PageCount, ProcessTitle, AllDataImport);
                 }
-
-                RefreshLogic.RefreshLogic.RefreshWIthNotepadCheck(flowLayoutPanel, LabelPage, PageCount, ProcessTitle, AllDataImport);
             }
-        }
-
-        private void TestGenerate_Click(object sender, EventArgs e)
-        {
-            //FlowLayoutPanel.Controls.Clear();
-            List<string> _savedApps = new List<string>
-            {
-                "app1",
-                "app2",
-                "app3"
-            };
-
-            foreach (var item in _savedApps)
-            {
-                Button btn = new Button();
-
-                btn.Text = item;
-                //btn.Tag = item;
-
-                //btn.Click += Button_Click;
-
-                flowLayoutPanel.Controls.Add(btn);
-            }
-        }
-
-        private void TestGenerate2_Click(object sender, EventArgs e)
-        {
-            //FlowLayoutPanel.Controls.Clear();
-            List<string> _savedApps = new List<string>
-            {
-                "app1",
-                "app2",
-                "app3"
-            };
-
-            foreach (var item in _savedApps)
-            {
-                Button btn = new Button();
-
-                btn.Text = item;
-                btn.Margin = new Padding(5, 5, 5, 5);
-                btn.Size = new Size(135, 40);
-                btn.Width = flowLayoutPanel.Width - 300;
-                btn.Font = new Font("Segoe UI Symbol", 9F);
-                btn.ForeColor = Color.White;
-
-                Button btn2 = new Button(); 
-                btn2.Text = item;
-                btn2.Margin = new Padding(5, 5, 5, 5);
-                btn2.Size = new Size(135, 40);
-                btn2.Width = flowLayoutPanel.Width - 550;
-                btn2.Font = new Font("Segoe UI Symbol", 9F);
-                btn2.ForeColor = Color.White;
-                btn2.BackColor = Color.Green;
-                //btn.Tag = item;
-
-                //btn.Click += Button_Click;
-
-                flowLayoutPanel.Controls.Add(btn);
-                flowLayoutPanel.Controls.Add(btn2);
-            }
-        }
     }
 }

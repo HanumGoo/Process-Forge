@@ -315,6 +315,11 @@ namespace ProcessForge
         {
             if (bulkWindowForm == null || bulkWindowForm.IsDisposed)
             {
+                if (string.IsNullOrEmpty(ProcessName.Text))
+                {
+                    MessageBox.Show("please add process name first at the main form", "error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 bulkWindowForm = new BulkWindowForm(ProcessName.Text);
                 bulkWindowForm.Show();
             }

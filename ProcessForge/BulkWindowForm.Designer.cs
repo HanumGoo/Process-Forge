@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BulkWindowForm));
-            label1 = new Label();
+            ProcessListLabel = new Label();
             label2 = new Label();
             RefreshButton = new Button();
             flowLayoutPanel = new FlowLayoutPanel();
@@ -37,29 +37,27 @@
             panel2 = new Panel();
             FilePathName = new TextBox();
             button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
+            PreviousButton = new Button();
+            NextButton = new Button();
             LabelPage = new Label();
             ImportTextbox = new TextBox();
             button4 = new Button();
             button5 = new Button();
             panel3 = new Panel();
-            TestGenerate = new Button();
-            TestGenerate2 = new Button();
             button6 = new Button();
             panel4 = new Panel();
             SuspendLayout();
             // 
-            // label1
+            // ProcessListLabel
             // 
-            label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI Symbol", 12F);
-            label1.ForeColor = Color.White;
-            label1.Location = new Point(12, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(135, 32);
-            label1.TabIndex = 1;
-            label1.Text = "Process List";
+            ProcessListLabel.AutoSize = true;
+            ProcessListLabel.Font = new Font("Segoe UI Symbol", 12F);
+            ProcessListLabel.ForeColor = Color.White;
+            ProcessListLabel.Location = new Point(12, 9);
+            ProcessListLabel.Name = "ProcessListLabel";
+            ProcessListLabel.Size = new Size(135, 32);
+            ProcessListLabel.TabIndex = 1;
+            ProcessListLabel.Text = "Process List";
             // 
             // label2
             // 
@@ -135,29 +133,31 @@
             button1.Text = "Find";
             button1.UseVisualStyleBackColor = false;
             // 
-            // button2
+            // PreviousButton
             // 
-            button2.BackColor = SystemColors.Desktop;
-            button2.Font = new Font("Segoe UI Symbol", 9F);
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(244, 647);
-            button2.Name = "button2";
-            button2.Size = new Size(103, 32);
-            button2.TabIndex = 54;
-            button2.Text = "Previous";
-            button2.UseVisualStyleBackColor = false;
+            PreviousButton.BackColor = SystemColors.Desktop;
+            PreviousButton.Font = new Font("Segoe UI Symbol", 9F);
+            PreviousButton.ForeColor = Color.White;
+            PreviousButton.Location = new Point(244, 647);
+            PreviousButton.Name = "PreviousButton";
+            PreviousButton.Size = new Size(103, 32);
+            PreviousButton.TabIndex = 54;
+            PreviousButton.Text = "Previous";
+            PreviousButton.UseVisualStyleBackColor = false;
+            PreviousButton.Click += PreviousButton_Click;
             // 
-            // button3
+            // NextButton
             // 
-            button3.BackColor = SystemColors.Desktop;
-            button3.Font = new Font("Segoe UI Symbol", 9F);
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(455, 647);
-            button3.Name = "button3";
-            button3.Size = new Size(103, 32);
-            button3.TabIndex = 55;
-            button3.Text = "Next";
-            button3.UseVisualStyleBackColor = false;
+            NextButton.BackColor = SystemColors.Desktop;
+            NextButton.Font = new Font("Segoe UI Symbol", 9F);
+            NextButton.ForeColor = Color.White;
+            NextButton.Location = new Point(455, 647);
+            NextButton.Name = "NextButton";
+            NextButton.Size = new Size(103, 32);
+            NextButton.TabIndex = 55;
+            NextButton.Text = "Next";
+            NextButton.UseVisualStyleBackColor = false;
+            NextButton.Click += NextButton_Click;
             // 
             // LabelPage
             // 
@@ -213,32 +213,6 @@
             panel3.Size = new Size(29, 26);
             panel3.TabIndex = 42;
             // 
-            // TestGenerate
-            // 
-            TestGenerate.BackColor = SystemColors.Desktop;
-            TestGenerate.Font = new Font("Segoe UI Symbol", 9F);
-            TestGenerate.ForeColor = Color.White;
-            TestGenerate.Location = new Point(139, 12);
-            TestGenerate.Name = "TestGenerate";
-            TestGenerate.Size = new Size(106, 32);
-            TestGenerate.TabIndex = 60;
-            TestGenerate.Text = "Generate";
-            TestGenerate.UseVisualStyleBackColor = false;
-            TestGenerate.Click += TestGenerate_Click;
-            // 
-            // TestGenerate2
-            // 
-            TestGenerate2.BackColor = SystemColors.Desktop;
-            TestGenerate2.Font = new Font("Segoe UI Symbol", 9F);
-            TestGenerate2.ForeColor = Color.White;
-            TestGenerate2.Location = new Point(247, 12);
-            TestGenerate2.Name = "TestGenerate2";
-            TestGenerate2.Size = new Size(106, 32);
-            TestGenerate2.TabIndex = 61;
-            TestGenerate2.Text = "Generate2";
-            TestGenerate2.UseVisualStyleBackColor = false;
-            TestGenerate2.Click += TestGenerate2_Click;
-            // 
             // button6
             // 
             button6.BackColor = SystemColors.Desktop;
@@ -269,15 +243,13 @@
             ClientSize = new Size(800, 691);
             Controls.Add(panel4);
             Controls.Add(button6);
-            Controls.Add(TestGenerate2);
-            Controls.Add(TestGenerate);
             Controls.Add(panel3);
             Controls.Add(button5);
             Controls.Add(button4);
             Controls.Add(ImportTextbox);
             Controls.Add(LabelPage);
-            Controls.Add(button2);
-            Controls.Add(button3);
+            Controls.Add(PreviousButton);
+            Controls.Add(NextButton);
             Controls.Add(button1);
             Controls.Add(FilePathName);
             Controls.Add(panel2);
@@ -285,7 +257,7 @@
             Controls.Add(flowLayoutPanel);
             Controls.Add(RefreshButton);
             Controls.Add(label2);
-            Controls.Add(label1);
+            Controls.Add(ProcessListLabel);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "BulkWindowForm";
             Text = "App Handler";
@@ -295,7 +267,7 @@
 
         #endregion
 
-        private Label label1;
+        private Label ProcessListLabel;
         private Label label2;
         private Button RefreshButton;
         private FlowLayoutPanel flowLayoutPanel;
@@ -303,15 +275,13 @@
         private Panel panel2;
         private TextBox FilePathName;
         private Button button1;
-        private Button button2;
-        private Button button3;
+        private Button PreviousButton;
+        private Button NextButton;
         private Label LabelPage;
         private TextBox ImportTextbox;
         private Button button4;
         private Button button5;
         private Panel panel3;
-        private Button TestGenerate;
-        private Button TestGenerate2;
         private Button button6;
         private Panel panel4;
     }
