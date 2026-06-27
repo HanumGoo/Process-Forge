@@ -6,7 +6,7 @@ namespace ProcessForge.RefreshLogic
 {
     public static class InputBox
     {
-        public static string? Show(string text, string title, string defaultValue = "")
+        public static string[]? Show(string text, string title, bool isMultiLine, string defaultValue = "")
         {
             Form form = new Form();
             Label lblText = new Label();
@@ -47,13 +47,40 @@ namespace ProcessForge.RefreshLogic
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.ForeColor = Color.White;
 
+            if (isMultiLine)
+            {
+                form.ClientSize = new Size(420, 260);
+
+                txtInput.Multiline = true;
+                txtInput.ScrollBars = ScrollBars.Vertical;
+                txtInput.AcceptsReturn = true;
+                txtInput.AcceptsTab = true;
+
+                txtInput.Location = new Point(15, 40);
+                txtInput.Size = new Size(390, 160);
+
+                btnOk.Location = new Point(240, 215);
+                btnCancel.Location = new Point(325, 215);
+            }
+            else
+            {
+                form.ClientSize = new Size(360, 130);
+
+                txtInput.Multiline = false;
+                txtInput.Location = new Point(15, 38);
+                txtInput.Size = new Size(330, 23);
+
+                btnOk.Location = new Point(175, 80);
+                btnCancel.Location = new Point(265, 80);
+            }
+
             form.Controls.Add(lblText);
             form.Controls.Add(txtInput);
             form.Controls.Add(btnOk);
             form.Controls.Add(btnCancel);
 
             if (form.ShowDialog() == DialogResult.OK)
-                return txtInput.Text;
+                return txtInput.Text.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.RemoveEmptyEntries); ;
 
             return null;
         }

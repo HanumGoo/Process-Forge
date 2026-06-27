@@ -109,9 +109,10 @@ namespace ProcessForge
             string search = txtSearch.Text.ToLower();
 
             bool isTrue = false;
+            bool isTrueSecond = false;
             foreach (Control control in flowLayoutPanel.Controls)
             {
-                
+
                 if (control is Button button)
                 {
                     if (button.Tag is ButtonData data)
@@ -127,12 +128,18 @@ namespace ProcessForge
                             isTrue = false;
                         }
                     }
+                    else if (isTrue)
+                    {
+                        button.Visible = true;
+                        isTrue = false;
+                        isTrueSecond = true;
+                    }
                     else
                     {
-                        if (isTrue)
+                        if (isTrueSecond)
                         {
                             button.Visible = true;
-                            isTrue = false;
+                            isTrueSecond = false;
                         }
                         else
                         {
@@ -145,18 +152,41 @@ namespace ProcessForge
 
         private void OnOffImport_Click(object sender, EventArgs e)
         {
-            //isUsingImport = !isUsingImport;
+            DialogResult messageBoxResult = MessageBox.Show("Are you sure want to reset all status\nto \"NotExist\"?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            //if (isUsingImport)
-            //{
-            //    panel3.BackColor = Color.Green;
-            //    OnOffImport.Text = "Off";
-            //}
-            //else
-            //{
-            //    panel3.BackColor = Color.Red;
-            //    OnOffImport.Text = "On";
-            //}
+            if (messageBoxResult != DialogResult.Yes)
+            {
+                return;
+            }
+
+            string path = ImportTextbox.Text;
+
+            if (!File.Exists(path) || string.IsNullOrEmpty(path))
+            {
+                MessageBox.Show("Error! : the path isnt right or you didn't add one.", "error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string[] AllData = File.ReadAllLines(path);
+            List<string> AllDataImport = new List<string>();
+
+
+
+            foreach (string item in AllData)
+            {
+                string[] TitleAndStatus = item.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (TitleAndStatus.Length != 2)
+                {
+                    MessageBox.Show("Import Data error! please check this one: \n" + item, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                AllDataImport.Add(TitleAndStatus[0] + ",NotExist");
+            }
+
+            File.WriteAllLines(path, AllDataImport);
+            RefreshFunction();
         }
 
         private void CheckImport_Click(object sender, EventArgs e)
@@ -202,6 +232,37 @@ namespace ProcessForge
             {
                 ImportTextbox.Text = OFD.FileName;
             }
+            RefreshFunction();
+        }
+
+        private void AddDatabutton_Click(object sender, EventArgs e)
+        {
+            string path = ImportTextbox.Text;
+
+            if (!File.Exists(path) || string.IsNullOrEmpty(path))
+            {
+                MessageBox.Show("Error! : the path isnt right or you didn't add one.", "error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string[]? text = ProcessForge.RefreshLogic.InputBox.Show("new data (can be bulk using new line) : ", "Input", true, "");
+            if (text == null || text[0] == "")
+            {
+                return;
+            }
+
+            string[] lines = File.ReadAllLines(path);
+
+            List<string> linesList = lines.ToList();
+
+            foreach (string item in text)
+            {
+                linesList.Add(item + ",NotExist");
+            }
+               
+
+            File.WriteAllLines(path, linesList);
+            RefreshFunction();
         }
     }
 }

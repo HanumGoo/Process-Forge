@@ -750,7 +750,6 @@
         private Panel panel4;
         private Label label7;
         private Button OpenBulkWindow;
-        private Button button1;
         private Label TextWinHandler;
         private Button OpenWindowImportThing;
     }

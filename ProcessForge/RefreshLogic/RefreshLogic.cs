@@ -166,13 +166,13 @@ namespace ProcessForge.RefreshLogic
 
                 btn.Text = DetectedProcess[0][i];
                 btn.Tag = new ButtonData
-                { 
-                LineIndex = i,
-                Text = DetectedProcess[0][i]
+                {
+                    LineIndex = i,
+                    Text = DetectedProcess[0][i]
                 };
                 btn.Margin = new Padding(5, 5, 5, 5);
                 btn.Size = new Size(135, 40);
-                btn.Width = flowLayoutPanel.Width - 300;
+                btn.Width = flowLayoutPanel.Width - 550;
                 btn.Font = new Font("Segoe UI Symbol", 9F);
                 btn.ForeColor = Color.White;
                 btn.Click += (sender, e) => Inputbox_Click(sender, e, path);
@@ -187,6 +187,17 @@ namespace ProcessForge.RefreshLogic
                 btn2.Font = new Font("Segoe UI Symbol", 9F);
                 btn2.ForeColor = Color.White;
 
+                Button btn3 = new Button();
+
+                btn3.Text = "Delete";
+                btn3.Tag = i;
+                btn3.Margin = new Padding(5, 5, 5, 5);
+                btn3.Size = new Size(135, 40);
+                btn3.Width = flowLayoutPanel.Width - 550;
+                btn3.Font = new Font("Segoe UI Symbol", 9F);
+                btn3.ForeColor = Color.White;
+                btn3.BackColor = Color.Maroon;
+                btn3.Click += (sender, e) => ButtonDelete_Click(sender, e, path, flowLayoutPanel);
 
                 if (DetectedProcess[1][i] == "NotExist")
                 {
@@ -205,6 +216,7 @@ namespace ProcessForge.RefreshLogic
 
                 flowLayoutPanel.Controls.Add(btn);
                 flowLayoutPanel.Controls.Add(btn2);
+                flowLayoutPanel.Controls.Add(btn3);
                 PageShow++;
             }
 
@@ -257,9 +269,64 @@ namespace ProcessForge.RefreshLogic
             }
             
         }
+        private static void ButtonDelete_Click(object? sender, EventArgs e, string path, FlowLayoutPanel flowLayoutPanel)
+        {
+            DialogResult messageBoxResult = MessageBox.Show("Are you sure want to delete this?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (messageBoxResult != DialogResult.Yes)
+            {
+                return;
+            }
+
+            if (sender is Button btn && !string.IsNullOrEmpty(btn.Tag?.ToString()))
+            {
+                List<string> lines = File.ReadAllLines(path).ToList();
+
+                int StartsLine = (int)btn.Tag;
+                lines.RemoveAt(StartsLine);
+
+                File.WriteAllLines(path, lines);
+
+                bool isFound = false;
+                foreach (Control control in flowLayoutPanel.Controls)
+                {
+
+                    if (control is Button button)
+                    {
+                        if (button.Tag is ButtonData data && data.LineIndex == StartsLine)
+                        {
+                            button.Visible = false;
+                            isFound = true;
+                        }
+                        else if (button.Tag is not ButtonData && button.Tag is not null && (int)button.Tag == StartsLine)
+                        {
+                            button.Visible = false;
+                        }
+                        else if (isFound && button.Tag is not null)
+                        {
+                            if (button.Tag is ButtonData currentData)
+                            {
+                                button.Tag = new ButtonData
+                                {
+                                    LineIndex = currentData.LineIndex - 1,
+                                    Text = currentData.Text
+                                };
+                            }
+                            else
+                            {
+                                int newTag = (int)button.Tag - 1;
+                                button.Tag = newTag;
+                            }
+                            
+                        }
+                    }
+                }
+
+            }
+        }
         private static void Inputbox_Click(object? sender, EventArgs e, string path)
         {
-            string? text = ProcessForge.RefreshLogic.InputBox.Show("Please enter a new value:", "Input");
+            string[]? text = ProcessForge.RefreshLogic.InputBox.Show("Please enter a new value:", "Input", false, "");
             if (text == null)
             {
                 return;
@@ -270,8 +337,8 @@ namespace ProcessForge.RefreshLogic
 
                 int StartsLine = data.LineIndex;
                 string[] DataSplit = lines[StartsLine].Split(new string[] { "," }, StringSplitOptions.None);
-                lines[StartsLine] = text + "," + DataSplit[1];
-                btn.Text = text;
+                lines[StartsLine] = text[0] + "," + DataSplit[1];
+                btn.Text = text[0];
                 File.WriteAllLines(path, lines);
             }
             else
@@ -279,6 +346,7 @@ namespace ProcessForge.RefreshLogic
                 MessageBox.Show("Error, this one Import didn't provide any title", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+        
     }
     public class ButtonData
     {

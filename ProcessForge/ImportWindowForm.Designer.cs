@@ -38,7 +38,7 @@
             LabelPage = new Label();
             PreviousButton = new Button();
             NextButton = new Button();
-            button1 = new Button();
+            AddDatabutton = new Button();
             txtSearch = new TextBox();
             panel2 = new Panel();
             panel1 = new Panel();
@@ -46,6 +46,7 @@
             RefreshButton = new Button();
             label2 = new Label();
             ProcessListLabel = new Label();
+            label1 = new Label();
             SuspendLayout();
             // 
             // CheckImport
@@ -80,8 +81,9 @@
             OnOffImport.Name = "OnOffImport";
             OnOffImport.Size = new Size(86, 32);
             OnOffImport.TabIndex = 79;
-            OnOffImport.Text = "On";
+            OnOffImport.Text = "Reset";
             OnOffImport.UseVisualStyleBackColor = false;
+            OnOffImport.Click += OnOffImport_Click;
             // 
             // panel3
             // 
@@ -118,20 +120,21 @@
             // LabelPage
             // 
             LabelPage.AutoSize = true;
-            LabelPage.Font = new Font("Segoe UI", 10F);
+            LabelPage.Font = new Font("Segoe UI", 8F);
             LabelPage.ForeColor = Color.White;
-            LabelPage.Location = new Point(370, 653);
+            LabelPage.Location = new Point(12, 662);
             LabelPage.Name = "LabelPage";
-            LabelPage.Size = new Size(56, 28);
+            LabelPage.Size = new Size(44, 21);
             LabelPage.TabIndex = 76;
             LabelPage.Text = "??/??";
+            LabelPage.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // PreviousButton
             // 
             PreviousButton.BackColor = SystemColors.Desktop;
             PreviousButton.Font = new Font("Segoe UI Symbol", 9F);
             PreviousButton.ForeColor = Color.White;
-            PreviousButton.Location = new Point(243, 652);
+            PreviousButton.Location = new Point(149, 655);
             PreviousButton.Name = "PreviousButton";
             PreviousButton.Size = new Size(103, 32);
             PreviousButton.TabIndex = 74;
@@ -144,7 +147,7 @@
             NextButton.BackColor = SystemColors.Desktop;
             NextButton.Font = new Font("Segoe UI Symbol", 9F);
             NextButton.ForeColor = Color.White;
-            NextButton.Location = new Point(454, 652);
+            NextButton.Location = new Point(258, 655);
             NextButton.Name = "NextButton";
             NextButton.Size = new Size(103, 32);
             NextButton.TabIndex = 75;
@@ -152,17 +155,18 @@
             NextButton.UseVisualStyleBackColor = false;
             NextButton.Click += NextButton_Click;
             // 
-            // button1
+            // AddDatabutton
             // 
-            button1.BackColor = SystemColors.Desktop;
-            button1.Font = new Font("Segoe UI Symbol", 9F);
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(350, 16);
-            button1.Name = "button1";
-            button1.Size = new Size(86, 32);
-            button1.TabIndex = 73;
-            button1.Text = "Find";
-            button1.UseVisualStyleBackColor = false;
+            AddDatabutton.BackColor = SystemColors.Desktop;
+            AddDatabutton.Font = new Font("Segoe UI Symbol", 9F);
+            AddDatabutton.ForeColor = Color.White;
+            AddDatabutton.Location = new Point(223, 16);
+            AddDatabutton.Name = "AddDatabutton";
+            AddDatabutton.Size = new Size(121, 32);
+            AddDatabutton.TabIndex = 73;
+            AddDatabutton.Text = "Add Data";
+            AddDatabutton.UseVisualStyleBackColor = false;
+            AddDatabutton.Click += AddDatabutton_Click;
             // 
             // txtSearch
             // 
@@ -238,12 +242,24 @@
             ProcessListLabel.TabIndex = 64;
             ProcessListLabel.Text = "Import List";
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI Symbol", 10F);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(356, 18);
+            label1.Name = "label1";
+            label1.Size = new Size(84, 28);
+            label1.TabIndex = 81;
+            label1.Text = "Search : ";
+            // 
             // ImportWindowForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Desktop;
             ClientSize = new Size(800, 702);
+            Controls.Add(label1);
             Controls.Add(CheckImport);
             Controls.Add(panel4);
             Controls.Add(OnOffImport);
@@ -253,7 +269,7 @@
             Controls.Add(LabelPage);
             Controls.Add(PreviousButton);
             Controls.Add(NextButton);
-            Controls.Add(button1);
+            Controls.Add(AddDatabutton);
             Controls.Add(txtSearch);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -279,7 +295,7 @@
         private Label LabelPage;
         private Button PreviousButton;
         private Button NextButton;
-        private Button button1;
+        private Button AddDatabutton;
         private TextBox txtSearch;
         private Panel panel2;
         private Panel panel1;
@@ -287,5 +303,6 @@
         private Button RefreshButton;
         private Label label2;
         private Label ProcessListLabel;
+        private Label label1;
     }
 }
