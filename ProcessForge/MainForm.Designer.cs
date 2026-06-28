@@ -688,6 +688,9 @@
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
+            MaximumSize = new Size(912, 727);
+            MinimumSize = new Size(912, 727);
             Name = "MainForm";
             Text = "Process Forge (0.0.0)";
             ((System.ComponentModel.ISupportInitialize)TimeSetForClearRAM).EndInit();
