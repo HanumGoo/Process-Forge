@@ -170,10 +170,25 @@ namespace ProcessForge
                 try
                 {
                     string NotepadPath = NotepadPathTextbox.Text;
-                    string NotepadContent = File.ReadAllText(NotepadPath);
-                    string[] NotepadExtract = NotepadContent.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] NotepadContent = File.ReadAllLines(NotepadPath);
 
-                    MessageBox.Show($"Running an Application for {NotepadExtract.Length} times\nRenaming all Applications based on the content of the notepad file", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    int runCounter = 0;
+                    foreach (string line in NotepadContent)
+                    {
+                        string[] NotepadExtract = line.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+                        if (NotepadExtract.Length != 2)
+                        {
+                            MessageBox.Show($"valid data! : {line}", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                        if (NotepadExtract[1] == "NotExist")
+                        {
+                            runCounter++;
+                        }
+                    }
+                    
+                    MessageBox.Show($"Running an Application for {runCounter} times\nRenaming all Applications based on the content of the txt file", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 catch (Exception ex)
